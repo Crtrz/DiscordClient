@@ -42,7 +42,7 @@ def ReadyEvent(MessageJson):
     AuthenticatedUser = Data["user"]
 
     # Focus on a specific guild
-    Client.FocusGuild("")
+    Client.FocusGuild("349051257702580224") #Discord requires you to Focus guilds if you want to beable to recive events from them!
 
     # Print authentication details
     print(f"Authenticated User! (Ready) [Username: {AuthenticatedUser['username']}] [SessionID: {Data['session_id']}]")
