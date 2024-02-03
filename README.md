@@ -66,6 +66,7 @@ The following events are available for handling:
 - **ReadyEvent:** Triggered when the bot is ready and connected to Discord.
 - **Reconnecting:** Triggered when the bot is attempting to reconnect to Discord.
 
+
 ### Webhook Class Documentation
 
 ### Notes
