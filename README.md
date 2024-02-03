@@ -1,5 +1,3 @@
-Sure! Here's some API documentation on how to use the `DiscordClient` library:
-
 ### DiscordClient Library Documentation
 
 #### Importing the Library
