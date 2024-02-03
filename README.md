@@ -1,60 +1,55 @@
-# FastGlobal
+Sure, here's a rephrased version of the documentation for your code:
 
-[![Master](https://travis-ci.org/discordapp/fastglobal.svg?branch=master)](https://travis-ci.org/discordapp/fastglobal)
-[![Hex.pm Version](http://img.shields.io/hexpm/v/fastglobal.svg?style=flat)](https://hex.pm/packages/fastglobal)
+---
 
-The Erlang VM is great at many things, but quick access to large shared data is not one of them. Storing data in a single process
-results in overloading the process, using an ETS table gets more expensive to read as the data gets larger, and both require copying
-data to the calling process. If you have large infrequently changing data that needs to be accessed by thousands of processes there
-is a better way.
+## Discord Websocket & Webhook Integration
 
-Erlang has an optimization called constant pools for functions that return static data, you can also compile modules at runtime.
-This method was originally popularized by [mochiglobal](https://github.com/mochi/mochiweb/blob/master/src/mochiglobal.erl). This
-module is an Elixir version with some optimizations such as generating the atom keys and reusing them.
+This script facilitates interaction with Discord's API using websockets and webhooks, allowing for real-time communication and event handling.
 
-## Performance
+### Features
 
-```
-benchmark name               iterations   average time
-fastglobal get                 10000000   0.33 µs/op
-ets get                          500000   7.64 µs/op
-agent get                        100000   12.67 µs/op
-fastglobal purge perf (100)         500   2846.26 µs/op
-fastglobal put (5)                  500   3683.30 µs/op
-fastglobal put (10)                 500   6449.98 µs/op
-fastglobal put (100)                 50   44543.56 µs/op
-```
+- **Websocket Integration:** Establishes a connection with Discord's gateway via websockets for receiving and dispatching events.
+- **Event Handling:** Listens for various events such as message creation and user authentication, triggering custom callbacks.
+- **Webhook Support:** Facilitates the sending of messages to Discord channels through webhooks.
 
-## Caveats
+### Usage
 
-- Compile times get slower as data size increases.
-- Compile times get slower the more processes are in the system. Erlang talks to each process when purging a module.
-- Getting a key that does not exist is expensive due to try/catch, put at least a `nil` value.
-- Creating atoms from strings is not cheap, use `FastGlobal.new`.
+1. **DiscordWebsocket Class:**
+   - `DiscordWebsocket` class handles websocket connection management and event dispatching.
+   - Provides methods for sending heartbeats, reconnecting to the websocket, and processing incoming messages.
+   - Events such as message creation and user authentication are captured and can be handled accordingly.
 
-## Usage
+2. **Webhook Class:**
+   - `Webhook` class enables interaction with Discord channels via webhooks.
+   - Retrieves channel and guild IDs from webhook URLs for targeted message delivery.
+   - Supports sending messages and receiving response status codes from webhooks.
 
-Add it to `mix.exs`
+### Dependencies
 
-```elixir
-defp deps do
-  [{:fastglobal, "~> 1.0"}]
-end
-```
+- `requests`: Used for making HTTP requests to the Discord API.
+- `websocket-client`: Enables websocket communication with Discord's gateway.
+- `colorama`: Facilitates colored output for enhanced readability.
 
-And just use it as a global map.
+### Usage Example
 
-```elixir
-data = %{
-  a: 1,
-  b: 2,
-  c: [3, 4]
-}
-FastGlobal.put(:data, data)
-data == FastGlobal.get(:data)
+```python
+# Example usage of the DiscordWebsocket and Webhook classes
+from discord_integration import DiscordWebsocket, Webhook
+
+# Initialize DiscordWebsocket with account token
+websocket = DiscordWebsocket("YOUR_ACCOUNT_TOKEN", Output=True)
+
+# Initialize Webhook with webhook URL
+webhook = Webhook("YOUR_WEBHOOK_URL", Output=True)
+
+# Send message via webhook
+webhook.Send({"content": "Hello from webhook!"})
 ```
 
-## License
+### Contact Information
 
-FastGlobal is released under [the MIT License](LICENSE).
-Check [LICENSE](LICENSE) file for more information.
+Feel free to reach out to the developer at: `StellarZon@outlook.com`
+
+---
+
+Feel free to customize the documentation further to provide additional details or to match your preferred style and formatting!
