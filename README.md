@@ -1,82 +1,66 @@
-Certainly! Here's the updated documentation with separate code examples for each event and function:
+Sure! Here's some API documentation on how to use the `DiscordClient` library:
 
----
+### DiscordClient Library Documentation
 
-## Discord Integration Script
-
-The Discord Integration script facilitates seamless interaction with Discord's API, leveraging websockets and webhooks to enable real-time communication and event handling.
-
-### Features
-
-- **Websocket Integration:** Establishes a websocket connection with Discord's gateway for receiving and dispatching events in real-time.
-- **Event Handling:** Listens for key events including message creation, user authentication, and reconnections, providing extensibility for custom event handling.
-- **Webhook Support:** Enables communication with Discord channels via webhooks, allowing for message transmission and response retrieval.
-- **Token Management:** Securely reads the Discord account token from a file for authentication and seamless connection establishment.
-
-### Usage
-
-#### 1. WebSocket Event Handling
-
+#### Importing the Library
 ```python
-# Import DiscordClient module
 import DiscordClient
+```
 
-# Read Discord account token from file
-Token = open("TOKEN", "r").read()
-
-# Initialize DiscordWebsocket with account token
+#### Creating a Discord Client Instance
+```python
+Token = open("TOKEN", "r").read()  # Read your Discord bot token from a file
 Client = DiscordClient.DiscordWebsocket(AccountToken=Token, Output=False)
+```
 
-# Define event handling functions
+#### Registering Event Handlers
+```python
+# Define event handler functions
 def MessageSent(MessageJson):
-    # Extract message content from JSON
-    Data = MessageJson.get("d", {})
-    Content = Data.get("content", "")
-
-    # Print message content
-    print(Content)
+    # Your logic to handle a message sent event
+    pass
 
 def ReadyEvent(MessageJson):
-    # Extract user details from JSON
-    Data = MessageJson.get("d", {})
-    AuthenticatedUser = Data["user"]
-
-    # Focus on a specific guild
-    Client.FocusGuild("349051257702580224") #Discord requires you to Focus guilds if you want to beable to recive events from them!
-
-    # Print authentication details
-    print(f"Authenticated User! (Ready) [Username: {AuthenticatedUser['username']}] [SessionID: {Data['session_id']}]")
+    # Your logic to handle a ready event
+    pass
 
 def Reconnecting():
-    # Print reconnection status
-    print("Reconnected")
+    # Your logic to handle reconnection
+    pass
 
-# Register event listeners
+# Register event handlers
 Client.WebsocketEvents.add_listener("MessageSent", MessageSent)
 Client.WebsocketEvents.add_listener("ReadyEvent", ReadyEvent)
 Client.WebsocketEvents.add_listener("Reconnecting", Reconnecting)
 ```
 
-#### 2. Webhook Interaction
-
+#### Sending Messages
 ```python
-# Initialize DiscordWebsocket with account token
-import DiscordClient
-
-# Read Discord account token from file
-Token = open("TOKEN", "r").read()
-
-# Initialize DiscordWebsocket with account token
-Client = DiscordClient.DiscordWebsocket(AccountToken=Token, Output=False)
-
-# Send message via webhook
-Client.SendMessage({"content":"blua"}, 745430737028644917)
+# Send a message to a specific channel
+Client.SendMessage({"content": "Your message content"}, channel_id)
 ```
 
-### Contact Information
+#### Focusing on a Guild
+```python
+# Focus on a specific guild to receive events from it
+Client.FocusGuild("guild_id")
+```
 
-For inquiries or feedback, feel free to contact the developer at: `StellarZon@outlook.com`
+#### Running the Client
+```python
+# The client runs asynchronously and will handle events in the background
+# Make sure your script keeps running to maintain the WebSocket connection
+```
 
----
+### Event Handling
+The following events are available for handling:
 
-Feel free to tailor the documentation further to match your specific requirements and preferences!
+- **MessageSent:** Triggered when a message is sent.
+- **ReadyEvent:** Triggered when the bot is ready and connected to Discord.
+- **Reconnecting:** Triggered when the bot is attempting to reconnect to Discord.
+
+### Notes
+- Ensure that you have installed the required dependencies (`colorama`, `websocket`, `requests`) before using the library.
+- Make sure you handle exceptions properly, especially when dealing with network connections and websockets.
+
+This documentation should help you get started with using the `DiscordClient` library for building Discord bots or interacting with Discord's API using websockets.
