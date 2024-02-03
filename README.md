@@ -75,29 +75,11 @@ The following events are available for handling:
 - The `Send()` method allows you to send data (like messages) to the specified webhook URL.
 - You can customize the message content, username, and avatar URL when sending data via the webhook.
 
-#### Importing the Library
-```python
-import DiscordClient
-```
-
 #### Creating a Webhook Instance
 ```python
 # Initialize a Webhook instance with the webhook URL and output option
 webhook_url = "your_webhook_url_here"
 webhook = DiscordClient.Webhook(webhook_url, Output=False)
-```
-
-#### Sending Data via Webhook
-```python
-# Define the data you want to send via the webhook
-webhook_data = {
-    "content": "Your message content",
-    "username": "Your custom username (optional)",
-    "avatar_url": "URL of the avatar (optional)"
-}
-
-# Send the data via the webhook
-webhook.Send(webhook_data)
 ```
 
 #### Example Usage:
