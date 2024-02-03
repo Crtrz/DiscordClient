@@ -1,53 +1,82 @@
+Certainly! Here's the updated documentation with separate code examples for each event and function:
+
 ---
 
-## Discord Websocket & Webhook Integration
+## Discord Integration Script
 
-This script facilitates interaction with Discord's API using websockets and webhooks, allowing for real-time communication and event handling.
+The Discord Integration script facilitates seamless interaction with Discord's API, leveraging websockets and webhooks to enable real-time communication and event handling.
 
 ### Features
 
-- **Websocket Integration:** Establishes a connection with Discord's gateway via websockets for receiving and dispatching events.
-- **Event Handling:** Listens for various events such as message creation and user authentication, triggering custom callbacks.
-- **Webhook Support:** Facilitates the sending of messages to Discord channels through webhooks.
+- **Websocket Integration:** Establishes a websocket connection with Discord's gateway for receiving and dispatching events in real-time.
+- **Event Handling:** Listens for key events including message creation, user authentication, and reconnections, providing extensibility for custom event handling.
+- **Webhook Support:** Enables communication with Discord channels via webhooks, allowing for message transmission and response retrieval.
+- **Token Management:** Securely reads the Discord account token from a file for authentication and seamless connection establishment.
 
 ### Usage
 
-1. **DiscordWebsocket Class:**
-   - `DiscordWebsocket` class handles websocket connection management and event dispatching.
-   - Provides methods for sending heartbeats, reconnecting to the websocket, and processing incoming messages.
-   - Events such as message creation and user authentication are captured and can be handled accordingly.
-
-2. **Webhook Class:**
-   - `Webhook` class enables interaction with Discord channels via webhooks.
-   - Retrieves channel and guild IDs from webhook URLs for targeted message delivery.
-   - Supports sending messages and receiving response status codes from webhooks.
-
-### Dependencies
-
-- `requests`: Used for making HTTP requests to the Discord API.
-- `websocket-client`: Enables websocket communication with Discord's gateway.
-- `colorama`: Facilitates colored output for enhanced readability.
-
-### Usage Example
+#### 1. WebSocket Event Handling
 
 ```python
-# Example usage of the DiscordWebsocket and Webhook classes
-from discord_integration import DiscordWebsocket, Webhook
+# Import DiscordClient module
+import DiscordClient
+
+# Read Discord account token from file
+Token = open("TOKEN", "r").read()
 
 # Initialize DiscordWebsocket with account token
-websocket = DiscordWebsocket("YOUR_ACCOUNT_TOKEN", Output=True)
+Client = DiscordClient.DiscordWebsocket(AccountToken=Token, Output=False)
 
-# Initialize Webhook with webhook URL
-webhook = Webhook("YOUR_WEBHOOK_URL", Output=True)
+# Define event handling functions
+def MessageSent(MessageJson):
+    # Extract message content from JSON
+    Data = MessageJson.get("d", {})
+    Content = Data.get("content", "")
+
+    # Print message content
+    print(Content)
+
+def ReadyEvent(MessageJson):
+    # Extract user details from JSON
+    Data = MessageJson.get("d", {})
+    AuthenticatedUser = Data["user"]
+
+    # Focus on a specific guild
+    Client.FocusGuild("")
+
+    # Print authentication details
+    print(f"Authenticated User! (Ready) [Username: {AuthenticatedUser['username']}] [SessionID: {Data['session_id']}]")
+
+def Reconnecting():
+    # Print reconnection status
+    print("Reconnected")
+
+# Register event listeners
+Client.WebsocketEvents.add_listener("MessageSent", MessageSent)
+Client.WebsocketEvents.add_listener("ReadyEvent", ReadyEvent)
+Client.WebsocketEvents.add_listener("Reconnecting", Reconnecting)
+```
+
+#### 2. Webhook Interaction
+
+```python
+# Initialize DiscordWebsocket with account token
+import DiscordClient
+
+# Read Discord account token from file
+Token = open("TOKEN", "r").read()
+
+# Initialize DiscordWebsocket with account token
+Client = DiscordClient.DiscordWebsocket(AccountToken=Token, Output=False)
 
 # Send message via webhook
-webhook.Send({"content": "Hello from webhook!"})
+Client.SendMessage({"content":"blua"}, 745430737028644917)
 ```
 
 ### Contact Information
 
-Feel free to reach out to the developer at: `StellarZon@outlook.com`
+For inquiries or feedback, feel free to contact the developer at: `StellarZon@outlook.com`
 
 ---
 
-Feel free to customize the documentation further to provide additional details or to match your preferred style and formatting!
+Feel free to tailor the documentation further to match your specific requirements and preferences!
