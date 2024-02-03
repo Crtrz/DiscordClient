@@ -1,5 +1,3 @@
-Sure, here's a rephrased version of the documentation for your code:
-
 ---
 
 ## Discord Websocket & Webhook Integration
